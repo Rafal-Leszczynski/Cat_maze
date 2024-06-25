@@ -1,5 +1,5 @@
-#ifndef POKOJE_HPP_INCLUDED
-#define POKOJE_HPP_INCLUDED
+#ifndef HEADLINES_HPP_INCLUDED
+#define HEADLINES_HPP_INCLUDED
 
 #include <iostream>
 #include <time.h>
@@ -1542,4 +1542,4 @@ void gra3 () //dziala
 */
 
 
-#endif // POKOJE_HPP_INCLUDED
+#endif // HEADLINES_HPP_INCLUDED
