@@ -7,7 +7,7 @@
 #include <string>
 #include <conio.h>
 #include <cctype>
-#include "pokoje.hpp"
+#include "headlines.hpp"
 
 using namespace std;
 
@@ -28,10 +28,10 @@ int main()
     //gogo ();              <<==    OKNA RECZNIE W PROGRAMIE< FIASKO
 
     kolor (7);
-    //setlocale(LC_ALL,""); poslie znaki dzia³a  w main, ale nie dzia³a w void
+    //setlocale(LC_ALL,""); poslie znaki dziaÂ³a  w main, ale nie dziaÂ³a w void
        // SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),1000);
        {
-           SetConsoleTitle("Koci Labirynt"); //zmiana nazwy konsoli (tytu³u)
+           SetConsoleTitle("Koci Labirynt"); //zmiana nazwy konsoli (tytuÂ³u)
        }
     do
       {
