@@ -1,5 +1,4 @@
-
-#include "headlines.hpp"
+// copyright <2024> Rafal Leszczyński
 #include <algorithm>
 #include <cctype>
 #include <conio.h>
@@ -9,168 +8,177 @@
 #include <string>
 #include <time.h>
 #include <windows.h>
+#include "headlines.hpp"
 
+std::string instructions_before_starting_the_game;
+std::string pass;
+std::string password;
+std::string reset;
+int door;
+int safeguard;
 
-using namespace std;
-
-string inst, pass, haslo, res;
-long int drzwi, bezpiecznik;
-
-// zrobic blokade na odpowiedzi co do przechodzenia miedzy pokojami, uzupelnic
-// zawartosci pokoi, petla dziala w 1 i 2 etapie, 3 etap sprawdzic, sprawdzic
-// dzialanie gry z hasla
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//          SPRAWDZIC CALY PROGRAM BO SIE ZROBILY DZIURY!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// block the answers regarding moving between rooms, complete them
+// the contents of the rooms, the loop works in stages 1 and 2, stage 3 check,
+// check operation of the password game
+//  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//  CHECK THE ENTIRE PROGRAM BECAUSE THERE ARE HOLES!!!
+//  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 int main() {
-
-  // SetWindow ();         <<==    TUTAJ PROBA USTALENIA WIELKOSCI
-  // gogo ();              <<==    OKNA RECZNIE W PROGRAMIE< FIASKO
-
-  kolor(7);
-  // setlocale(LC_ALL,""); poslie znaki dzia³a  w main, ale nie dzia³a w void
-  // SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),1000);
+  color_settings(7);
   {
-    SetConsoleTitle("Koci Labirynt"); // zmiana nazwy konsoli (tytu³u)
+    SetConsoleTitle("Cat Maze");  //  console name (ttitle change)
   }
   do {
-    drzwi = 80;
-    bezpiecznik = drzwi;
-    cout << "" << endl
-         << "Prawa autorskie: Rafal Leszczynski" << endl
-         << "" << endl; // ustawic kolory (tutaj test, problem z polskimi
-                        // znakami w voidach
-    cout << " Witam w grze: " << '"' << "Koci Labirynt" << '"' << endl
-         << "" << endl;
-    cout << " (w pliku z gra zapisano txt. z lnkami do ilustracji rzeczy "
-            "wystepujacyh w grze.)"
-         << endl;
+    door = 80;
+    safeguard = door;
+    std::cout << "" << std::endl
+              << "Copyright: Rafal Leszczynski" << std::endl
+              << "" << std::endl;
+    std::cout << " Welcome to the game: " << '"' << "Cat Maze" << '"'
+              << std::endl
+              << "" << std::endl;
+    std::cout
+        << " (txt is saved in the game file. with links to illustrate things "
+           "appearing in the game.)"
+        << std::endl;
     // zapis (); tymczasowow, odblokowac na koncu!!!!!!!!!!!!!!
     do {
-      cout << "" << endl
-           << "Czy chcesz zapoznac sie z instrukcja gry?  tak/nie" << endl
-           << "" << endl;
-      cout << " W kazdym momencie trwania gry mozesz wezwac instukcje." << endl;
-      cout << " Podaj wtedy " << '"' << "0" << '"' << " (zero)." << endl
-           << "" << endl;
-      //   cin  >>inst; POTEM SKASOWAC !!!!!!!!!!!!!
-      inst = "nie";
+      std::cout << "" << std::endl
+           << "Would you like to read the game's instructions?  Yes/No"
+           << std::endl
+           << "" << std::endl;
+      std::cout << " You can call for instructions at any time during the game."
+                << std::endl;
+      std::cout << " Serve then " << '"' << "0" << '"' << " (zero)."
+                << std::endl
+                << "" << std::endl;
+      instructions_before_starting_the_game = "no";
 
-      transform(inst.begin(), inst.end(), inst.begin(), ::toupper);
-      if ((inst != "TAK") && (inst != "NIE"))
-        zla_komenda();
-    } while ((inst != "TAK") && (inst != "NIE"));
-    if (inst == "TAK") // INSTRUKCJA VOID
-    {
+      transform(instructions_before_starting_the_game.begin(),
+                instructions_before_starting_the_game.end(),
+                instructions_before_starting_the_game.begin(), ::toupper);
+      if ((instructions_before_starting_the_game != "YES") &&
+          (instructions_before_starting_the_game != "NO"))
+        bad_command();
+    } while ((instructions_before_starting_the_game != "YES") &&
+             (instructions_before_starting_the_game != "NO"));
+    if (instructions_before_starting_the_game == "YES") {  //  INSTRUKCJA VOID
       {
         //   sndPlaySound( "C:\Users\Vini i Kama\Documents\code blocks
-        //   projekty\dosc duze projekty\Labirynt-gra\snd.wav", SND_ASYNC );
-        //   problem z dzwiekiem, ogarnac !!!!!!!!!!!!!!!!!!!!!!!!
+        //   projects\quite large projects\Labyrinth-game\snd.wav", SND_ASYNC );
+        //   problem with sound, sort it out !!!!!!!!!!!!!!!!!!!!!!!!
       }
-      instrukcja();
+      instruction();
     }
-    do // CZY HASLO
-    {
-      cout << "Czy chcesz podac haslo dla pozniejszych etapow? tak/nie" << endl;
-      // cin  >>pass; POTEM SKASOWAC !!!
-      pass = "tak";
+    do {  //  OR PASSWORD
+      std::cout << "Do you want to enter a password for later steps? Yes/No"
+                << std::endl;
+      // cin  >>pass; THEN DELETE !!!
+      pass = "yes";
       transform(pass.begin(), pass.end(), pass.begin(), ::toupper);
-      if ((pass != "TAK") && (pass != "NIE"))
-        zla_komenda();
-    } while ((pass != "TAK") && (pass != "NIE"));
-    if (pass == "TAK") // WARUNEK DLA BLEDNEGO HASLA (KOMUNIKAT)
-    {
-      drzwi = 90;
-      do // POPRAWNOSC HASLA
-      {
-        cout << "" << endl;
-        cout << "Podaj haslo: (jesli chcesz zrezygnowac napisz ``XXXX``)"
-             << endl;
-        // cin  >>haslo; POTEM SKASOWAC !!!
-        haslo = "CHIMERA";
-        transform(haslo.begin(), haslo.end(), haslo.begin(), ::toupper);
-        if ((haslo != "LESZY") && (haslo != "CHIMERA") && (haslo != "PERYT") &&
-            (haslo != "XXXX"))
-          zla_komenda();
-      } while ((haslo != "LESZY") && (haslo != "CHIMERA") &&
-               (haslo != "PERYT") && (haslo != "XXXX"));
-      if (haslo == "XXXX")
-        haslo = "LESZY";
-    } else
-      haslo = "LESZY";
-    cout << "" << endl << "ZACZYNAMY GRE?" << endl << "" << endl;
+      if ((pass != "YES") && (pass != "NO"))
+        bad_command();
+    } while ((pass != "YES") && (pass != "NO"));
+    if (pass == "YES") {  //  CONDITION FOR ERROR PASSWORD (MESSAGE)
+      door = 90;
+      do {  //  PASSWORD CORRECTNESS
+        std::cout << "" << std::endl;
+        std::cout
+            << "Enter your password: (if you want to resign, write ``XXXX``)"
+            << std::endl;
+        // cin  >>password; THEN DELETE !!!
+        password = "CHIMERA";
+        transform(password.begin(), password.end(), password.begin(),
+                  ::toupper);
+        if ((password != "LESZY") && (password != "CHIMERA") &&
+            (password != "PERITE") && (password != "XXXX"))
+          bad_command();
+      } while ((password != "LESZY") && (password != "CHIMERA") &&
+               (password != "PERITE") && (password != "XXXX"));
+      if (password == "XXXX")
+        password = "LESZY";
+    } else {
+      password = "LESZY";}
+    std::cout << "" << std::endl
+              << "LET'S START THE GAME?" << std::endl
+              << "" << std::endl;
     system("pause>nu1l");
 
     system("cls");
 
-    //////////////////PIERWSZY ETAP
-    ///GRY////////////////////////////////////////////////////////////////////////////////
-    if (haslo == "LESZY") {
-
-      cout << "Haslo do pierwszego poziomu to: LESZY" << endl << "" << endl;
-      cout << "Twoim celem tego etapu jest tylko odnalesc pokoj nr 10 w "
-              "labiryncie pokoji."
-           << endl;
-      cout << "Podaj kolejny numer pokoju:" << endl << "" << endl;
-      drzwi = 1;
-      cout << "" << endl;
+    //////////////////  THE FIRST STEP
+    ///  GAME
+    ///  ////////////////////////////////////////////////////////////////////////////////
+    if (password == "LESZY") {
+      std::cout << "The password for the first level is: LESZY" << std::endl
+                << "" << std::endl;
+      std::cout << "Your goal in this stage is to find room number 10 "
+                   "maze of rooms."
+                << std::endl;
+      std::cout << "Enter the next room number:" << std::endl
+                << "" << std::endl;
+      door = 1;
+      std::cout << "" << std::endl;
       do {
-        if (drzwi == 0) {
-          instrukcja();
+        if (door == 0) {
+          instruction();
         }
-        if ((drzwi == 888) || (drzwi == 999))
-          inv = drzwi, inventory();
-        bezpiecznik = drzwi;
+        if ((door == 888) || (door == 999))
+          item = door, function_inventory();
+        safeguard = door;
         gra1();
-        cout << "" << endl;
-      } while (drzwi != 12345);
-      cout << "" << endl;
+        std::cout << "" << std::endl;
+      } while (door != 12345);
+      std::cout << "" << std::endl;
     }
     system("cls");
-    ///////////////////DRUGI ETAP
-    ///GRY//////////////////////////////////////////////////////////////////////////////
-    ///ZROBIC
-    if (haslo == "CHIMERA") {
-      drzwi = 12345;
+    ////////////////  THE SECOND STAGE
+    ///  GAME  ///////////////////////////////////////////////////////
+    ///  MAKE
+    if (password == "CHIMERA") {
+      door = 12345;
       do {
-        if (drzwi == 0) {
-          instrukcja();
+        if (door == 0) {
+          instruction();
         }
         gra2();
-        cout << "" << endl;
-      } while (drzwi != 98987);
-      cout << "" << endl;
+        std::cout << "" << std::endl;
+      } while (door != 98987);
+      std::cout << "" << std::endl;
     }
     system("cls");
-    ////////////////////TRZECI ETAP
-    ///GRY///////////////////////////////////////////////////////////////////////////////////////////
-    if (haslo == "PERYT") {
-      drzwi = 98987;
+    ////////////////////  THE THIRD STAGE
+    ///  GAME
+    ///  ///////////////////////////////////////////////////////////////////////////////////////////
+    if (password == "PERITE") {
+      door = 98987;
       do {
-        if (drzwi == 0) {
-          instrukcja();
+        if (door == 0) {
+          instruction();
         }
         gra3();
-        cout << "" << endl;
-      } while (drzwi != 56238);
-      cout << "" << endl;
+        std::cout << "" << std::endl;
+      } while (door != 56238);
+      std::cout << "" << std::endl;
     }
-    //////////////////////////RESTART
-    ///GRY//////////////////////////////////////////////////////////////////////////
-    cout << "Czy chcesz zrestartowac gre? tak/nie" << endl << "" << endl;
-    cin >> res;
-    transform(res.begin(), res.end(), res.begin(), ::toupper);
-  } while (res != "NIE");
-  cout << "koniec gry" << endl;
+    //////////////////////////
+    ///  RESTART GAME
+    //////////////////////////
+    std::cout << "Do you want to restart the game? Yes/No" << std::endl
+              << "" << std::endl;
+    std::cin >> reset;
+    transform(reset.begin(), reset.end(), reset.begin(), ::toupper);
+  } while (reset != "NO");
+  std::cout << "end of the game" << std::endl;
 
-  ///////////////////DANE INFORMACYJNE//////////////////
-  cout << "" << endl << "" << endl << "" << endl;
-  cout << "DANE INFORMACYJNE:" << endl;
-  cout << haslo << " haslo" << endl;
-  cout << drzwi << " dzwi" << endl;
-  cout << res << " res" << endl;
-  cout << pass << " pass" << endl;
-  cout << inst << " inst" << endl;
+  ///////////////////  INFORMATION DATA  //////////////////
+  std::cout << "" << std::endl << "" << std::endl << "" << std::endl;
+  std::cout << "INFORMATION DATA:" << std::endl;
+  std::cout << password << " password" << std::endl;
+  std::cout << door << " door" << std::endl;
+  std::cout << reset << " reset" << std::endl;
+  std::cout << pass << " pass" << std::endl;
+  std::cout << instruction << " instruction" << std::endl;
 
   return 0;
 }
